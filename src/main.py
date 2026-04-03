@@ -107,23 +107,10 @@ class FlightTracker(App):
 
 
 def main():
-    search = SearchFlights()
-    filters = FlightSearchFilters(
-        passenger_info=PassengerInfo(adults=1),
-        flight_segments=[
-            FlightSegment(
-                departure_airport=[[Airport.MTY, 0]],
-                arrival_airport=[[Airport.BOS, 0]],
-                travel_date="2026-06-06",
-            )
-        ],
-    )
-    results = search.search(filters)
-    for result in results:
-        print(result)
+    pass
 
 
 if __name__ == "__main__":
-    # main()
+    main()
     app = FlightTracker()
     app.run()
