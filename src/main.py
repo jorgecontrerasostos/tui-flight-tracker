@@ -21,6 +21,15 @@ def get_airport() -> list[str]:
 def validate_date():
     pass
 
+def format_duration(duration: int) -> str:
+    hours = duration // 60
+    minutes = duration % 60
+    if duration < 60:
+        return f"{duration}m"
+    if duration == 60:
+        return f"{hours}h"
+    return f"{hours}h {minutes}m"
+
 
 class FlightTracker(App):
     departure: str = ""
@@ -87,7 +96,7 @@ class FlightTracker(App):
             table.add_row(
                 str(result.price),
                 str(result.stops),
-                str(result.duration / 60),
+                format_duration(result.duration),
                 result.legs[0].departure_airport,
                 result.legs[-1].arrival_airport,
                 result.legs[0].airline,
