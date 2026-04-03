@@ -30,6 +30,9 @@ def format_duration(duration: int) -> str:
         return f"{hours}h"
     return f"{hours}h {minutes}m"
 
+def format_price(price: float) -> str:
+    return f"${price:,.2f} MXN"
+
 
 class FlightTracker(App):
     departure: str = ""
@@ -94,7 +97,7 @@ class FlightTracker(App):
 
         for result in results:
             table.add_row(
-                str(result.price),
+                format_price(result.price),
                 str(result.stops),
                 format_duration(result.duration),
                 result.legs[0].departure_airport,
