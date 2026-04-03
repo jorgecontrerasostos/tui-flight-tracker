@@ -83,10 +83,6 @@ class FlightTracker(App):
         table.clear(columns=True)
         table.add_columns("Price", "Stops", "Duration", "Departure", "Arrival", "Airlines")
 
-        # TODO(human): loop over results and add one row per FlightResult using table.add_row()
-        # Each row should show: price, stops, duration (convert minutes to Xh Ym),
-        # first leg departure time, last leg arrival time, and airline names joined with " → "
-
         for result in results:
             table.add_row(
                 str(result.price),
@@ -96,10 +92,6 @@ class FlightTracker(App):
                 result.legs[-1].arrival_airport,
                 result.legs[0].airline,
             )
-
-
-def search_flight():
-    pass
 
 
 def main():
