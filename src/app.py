@@ -1,37 +1,16 @@
-from os import name
 from fli.search import SearchFlights
-from fli.models import FlightSearchFilters, FlightSegment, Airport, PassengerInfo
-from rich import print
-from rich.jupyter import display
+
 from rich.text import Text
 from rich.console import Console
 from textual.app import App, ComposeResult
 from textual.suggester import SuggestFromList
-from textual.widgets import Footer, Header, Label, Select, Button, Input, DataTable
+from textual.widgets import Footer, Header, Label, Button, Input, DataTable
 from textual.containers import Vertical
+from formatters import format_duration, format_price
+from utils import get_airport
+from search import search_flight
 
 console = Console()
-
-def get_airports() -> list[tuple[str, str]]:
-    return [(f"{airport.name} - {airport.value}", airport.name) for airport in Airport]
-
-def get_airport() -> list[str]:
-    return [f"{airport.name} - {airport.value}"for airport in Airport]
-
-def validate_date():
-    pass
-
-def format_duration(duration: int) -> str:
-    hours = duration // 60
-    minutes = duration % 60
-    if duration < 60:
-        return f"{duration}m"
-    if duration == 60:
-        return f"{hours}h"
-    return f"{hours}h {minutes}m"
-
-def format_price(price: float) -> str:
-    return f"${price:,.2f} MXN"
 
 
 class FlightTracker(App):
@@ -44,21 +23,37 @@ class FlightTracker(App):
         yield Header()
         yield Vertical(
             Label(
-                Text.assemble("✈️  Welcome to (A very cool app name goes here)!", "bold green", style="bold")
+                Text.assemble(
+                    "✈️  Welcome to (A very cool app name goes here)!",
+                    "bold green",
+                    style="bold",
+                )
             ),
             Label(Text("Where are we departing from?")),
-            Input(suggester=SuggestFromList(get_airport(), case_sensitive=False,), name="from"),
+            Input(
+                suggester=SuggestFromList(
+                    get_airport(),
+                    case_sensitive=False,
+                ),
+                name="from",
+            ),
             Label("Where are we going?"),
-            Input(suggester=SuggestFromList(get_airport(), case_sensitive=False), name="whereto"),
+            Input(
+                suggester=SuggestFromList(get_airport(), case_sensitive=False),
+                name="whereto",
+            ),
             Label("When?"),
             Input(placeholder="yyyy-mm-dd", type="text", name="departure_date"),
             Label("How many?"),
-            Input(placeholder="# of travelers", type="integer", name="number_of_passengers"),
+            Input(
+                placeholder="# of travelers",
+                type="integer",
+                name="number_of_passengers",
+            ),
             Button("Search", variant="primary"),
-            DataTable()
+            DataTable(),
         )
         yield Footer()
-
 
     def on_input_changed(self, event: Input.Changed) -> None:
         if event.input.name == "departure_date":
@@ -75,25 +70,18 @@ class FlightTracker(App):
             self.notify("Departure and or Arrival can't be empty", severity="error")
             return
 
-        departure = Airport[self.departure]
-        arrival = Airport[self.arrival]
-
-        search = SearchFlights()
-        filters = FlightSearchFilters(
-            passenger_info=PassengerInfo(adults=self.adults),
-            flight_segments=[
-                FlightSegment(
-                    departure_airport=[[departure, 0]],
-                    arrival_airport=[[arrival, 0]],
-                    travel_date=self.travel_date,
-                )
-            ],
+        results = search_flight(
+            departure_date=self.travel_date,
+            departure_airport=self.departure,
+            arrival_airport=self.arrival,
+            passengers=self.adults
         )
-        results = search.search(filters)
 
         table = self.query_one(DataTable)
         table.clear(columns=True)
-        table.add_columns("Price", "Stops", "Duration", "Departure", "Arrival", "Airlines")
+        table.add_columns(
+            "Price", "Stops", "Duration", "Departure", "Arrival", "Airlines"
+        )
 
         for result in results:
             table.add_row(
@@ -106,11 +94,6 @@ class FlightTracker(App):
             )
 
 
-def main():
-    pass
-
-
 if __name__ == "__main__":
-    main()
     app = FlightTracker()
     app.run()
