@@ -78,7 +78,8 @@ class FlightTracker(App):
         )
         if results is None:
             self.notify("Search failed. Try again", severity="warning")
-        if results == []:
+            return
+        if not results:
             self.notify("No flights for this route", severity="information")
             return
 
