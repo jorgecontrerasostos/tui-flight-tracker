@@ -11,3 +11,8 @@ dependencies = [
     "ruff>=0.15.8",
     "textual>=8.2.1",
 ]
+
+[dependency-groups]
+dev = [
+    "ty>=0.0.28",
+]
