@@ -2,6 +2,9 @@ from fli.models import FlightSearchFilters, FlightSegment, Airport, PassengerInf
 from fli.search import SearchFlights
 
 import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def search_flight(
@@ -9,7 +12,7 @@ def search_flight(
     departure_airport: str,
     arrival_airport: str,
     passengers: int
-) -> list[FlightResult]:
+) -> list[FlightResult] | None:
         departure = Airport[departure_airport]
         arrival = Airport[arrival_airport]
 
@@ -24,5 +27,10 @@ def search_flight(
                 )
             ],
         )
-        results = search.search(filters)
+        results = None
+        try:      
+            results = search.search(filters)
+        except Exception as e:
+            logger.error(f"Flight search failed: {e}")
+            return None
         return results

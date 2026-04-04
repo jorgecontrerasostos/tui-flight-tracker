@@ -76,6 +76,11 @@ class FlightTracker(App):
             arrival_airport=self.arrival,
             passengers=self.adults
         )
+        if results is None:
+            self.notify("Search failed. Try again", severity="warning")
+        if results == []:
+            self.notify("No flights for this route", severity="information")
+            return
 
         table = self.query_one(DataTable)
         table.clear(columns=True)
