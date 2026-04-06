@@ -50,7 +50,8 @@ class FlightTracker(App):
                 type="integer",
                 name="number_of_passengers",
             ),
-            Button("Search", variant="primary"),
+            Button("Search", variant="primary", id="search"),
+            Button("Clear", variant="primary", id="clear"),
             DataTable(),
         )
         yield Footer()
@@ -66,38 +67,47 @@ class FlightTracker(App):
             self.arrival = str(event.value.split("-")[0].strip())
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        if not self.departure or not self.arrival:
-            self.notify("Departure and or Arrival can't be empty", severity="error")
-            return
+        if event.button.id == "clear":
+            self.departure = ""
+            self.arrival = ""
+            self.travel_date = ""
+            self.adults = 1
+            for inp in self.query(Input):
+                inp.value = ""
+            self.query_one(DataTable).clear(columns=True)
+        elif event.button.id == "search":
+            if not self.departure or not self.arrival:
+                self.notify("Departure and or Arrival can't be empty", severity="error")
+                return
 
-        results = search_flight(
-            departure_date=self.travel_date,
-            departure_airport=self.departure,
-            arrival_airport=self.arrival,
-            passengers=self.adults
-        )
-        if results is None:
-            self.notify("Search failed. Try again", severity="warning")
-            return
-        if not results:
-            self.notify("No flights for this route", severity="information")
-            return
-
-        table = self.query_one(DataTable)
-        table.clear(columns=True)
-        table.add_columns(
-            "Price", "Stops", "Duration", "Departure", "Arrival", "Airlines"
-        )
-
-        for result in results:
-            table.add_row(
-                format_price(result.price),
-                str(result.stops),
-                format_duration(result.duration),
-                result.legs[0].departure_airport.value,
-                result.legs[-1].arrival_airport.value,
-                format_airline(result.legs[0].airline.value),
+            results = search_flight(
+                departure_date=self.travel_date,
+                departure_airport=self.departure,
+                arrival_airport=self.arrival,
+                passengers=self.adults
             )
+            if results is None:
+                self.notify("Search failed. Try again", severity="warning")
+                return
+            if not results:
+                self.notify("No flights for this route", severity="information")
+                return
+
+            table = self.query_one(DataTable)
+            table.clear(columns=True)
+            table.add_columns(
+                "Price", "Stops", "Duration", "Departure", "Arrival", "Airlines"
+            )
+
+            for result in results:
+                table.add_row(
+                    format_price(result.price),
+                    str(result.stops),
+                    format_duration(result.duration),
+                    result.legs[0].departure_airport.value,
+                    result.legs[-1].arrival_airport.value,
+                    format_airline(result.legs[0].airline.value),
+                )
 
 
 if __name__ == "__main__":
