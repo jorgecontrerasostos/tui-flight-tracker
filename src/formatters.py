@@ -1,3 +1,5 @@
+from datetime import datetime
+
 AIRLINES = {
     "Aeroenlaces Nacionales": "Viva Aerobus",
 }
@@ -17,3 +19,6 @@ def format_price(price: float) -> str:
 
 def format_airline(airline_name: str) -> str:
     return AIRLINES.get(airline_name, airline_name)
+
+def format_time(dt: datetime) -> str:
+    return dt.strftime("%H:%M")

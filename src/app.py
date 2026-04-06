@@ -6,7 +6,7 @@ from textual.app import App, ComposeResult
 from textual.suggester import SuggestFromList
 from textual.widgets import Footer, Header, Label, Button, Input, DataTable
 from textual.containers import Vertical
-from formatters import format_airline, format_duration, format_price
+from formatters import format_airline, format_duration, format_price, format_time
 from utils import get_airport
 from search import search_flight
 
@@ -96,7 +96,7 @@ class FlightTracker(App):
             table = self.query_one(DataTable)
             table.clear(columns=True)
             table.add_columns(
-                "Price", "Stops", "Duration", "Departure", "Arrival", "Airlines"
+                "Price", "Stops", "Duration", "Departure Time", "Arrival Time", "Departure Airport", "Arrival Airport", "Airlines"
             )
 
             for result in results:
@@ -104,6 +104,8 @@ class FlightTracker(App):
                     format_price(result.price),
                     str(result.stops),
                     format_duration(result.duration),
+                    format_time(result.legs[0].departure_datetime),
+                    format_time(result.legs[-1].arrival_datetime),
                     result.legs[0].departure_airport.value,
                     result.legs[-1].arrival_airport.value,
                     format_airline(result.legs[0].airline.value),
