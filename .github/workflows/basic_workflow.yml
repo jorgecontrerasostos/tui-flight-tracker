@@ -11,6 +11,7 @@ jobs:
 
   say-hello-python:
     runs-on: ubuntu-24.04
+    needs: say-hello-bash
     steps:
       - run: print("Hello World Python")
         shell: python
