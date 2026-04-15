@@ -13,6 +13,17 @@ def search_flight(
     arrival_airport: str,
     passengers: int
 ) -> list[FlightResult] | None:
+        """Search flights for a one-way route and departure date.
+
+        Args:
+            departure_date: Travel date for the outbound segment.
+            departure_airport: Departure airport enum key used by ``Airport``.
+            arrival_airport: Arrival airport enum key used by ``Airport``.
+            passengers: Number of adult passengers.
+
+        Returns:
+            A list of matching flight results when the search succeeds, otherwise ``None``.
+        """
         departure = Airport[departure_airport]
         arrival = Airport[arrival_airport]
 
