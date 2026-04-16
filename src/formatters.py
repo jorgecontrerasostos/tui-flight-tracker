@@ -4,6 +4,7 @@ AIRLINES = {
     "Aeroenlaces Nacionales": "Viva Aerobus",
 }
 
+
 def format_duration(duration: int) -> str:
     """Format a duration in minutes into a compact readable string.
 
@@ -33,6 +34,7 @@ def format_price(price: float) -> str:
     """
     return f"${price:,.2f} MXN p/p"
 
+
 def format_airline(airline_name: str) -> str:
     """Normalize airline names using known display aliases.
 
@@ -43,6 +45,7 @@ def format_airline(airline_name: str) -> str:
         A normalized airline name when a mapping exists, otherwise the input name.
     """
     return AIRLINES.get(airline_name, airline_name)
+
 
 def format_time(dt: datetime) -> str:
     """Format a datetime value as a 24-hour time string.
