@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def search_flight(
-    departure_date: datetime.date,
+    departure_date: str,
     departure_airport: str,
     arrival_airport: str,
     passengers: int,
