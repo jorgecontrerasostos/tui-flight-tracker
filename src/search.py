@@ -7,7 +7,6 @@ from fli.models import (
 )
 from fli.search import SearchFlights
 
-import datetime
 import logging
 
 logger = logging.getLogger(__name__)
