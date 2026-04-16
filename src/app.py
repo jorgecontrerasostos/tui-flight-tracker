@@ -1,5 +1,3 @@
-from fli.search import SearchFlights
-
 from rich.text import Text
 from rich.console import Console
 from textual.app import App, ComposeResult
