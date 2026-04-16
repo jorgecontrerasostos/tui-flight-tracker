@@ -17,3 +17,7 @@ dependencies = [
 dev = [
     "ty>=0.0.28",
 ]
+
+[[tool.mypy.overrides]]
+module = "fli.*"
+ignore_missing_imports = true 
