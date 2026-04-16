@@ -82,7 +82,7 @@ class FlightTracker(App):
                 departure_date=self.travel_date,
                 departure_airport=self.departure,
                 arrival_airport=self.arrival,
-                passengers=self.adults
+                passengers=self.adults,
             )
             if results is None:
                 self.notify("Search failed. Try again", severity="warning")
@@ -94,7 +94,14 @@ class FlightTracker(App):
             table = self.query_one(DataTable)
             table.clear(columns=True)
             table.add_columns(
-                "Price", "Stops", "Duration", "Departure Time", "Arrival Time", "Departure Airport", "Arrival Airport", "Airlines"
+                "Price",
+                "Stops",
+                "Duration",
+                "Departure Time",
+                "Arrival Time",
+                "Departure Airport",
+                "Arrival Airport",
+                "Airlines",
             )
 
             for result in results:
