@@ -16,6 +16,7 @@ dev = [
     "ty>=0.0.28",
     "mypy>=1.20.1",
     "ruff>=0.15.8",
+    "pytest>=9.0.3",
 ]
 
 [[tool.mypy.overrides]]
