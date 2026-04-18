@@ -1,5 +1,5 @@
 from fli.models import Airport
-
+from datetime import datetime
 
 def get_airports() -> list[tuple[str, str]]:
     """
@@ -10,6 +10,10 @@ def get_airports() -> list[tuple[str, str]]:
 
 
 def get_airport() -> list[str]:
+    """
+    This is another doc
+    :return:
+    """
     return [f"{airport.name} - {airport.value}" for airport in Airport]
 
 
