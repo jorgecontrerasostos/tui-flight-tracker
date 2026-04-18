@@ -2,10 +2,6 @@ from fli.models import Airport
 
 
 def get_airports() -> list[tuple[str, str]]:
-    """
-    This functions returns a formatted list of airports
-    :return:
-    """
     return [(f"{airport.name} - {airport.value}", airport.name) for airport in Airport]
 
 
