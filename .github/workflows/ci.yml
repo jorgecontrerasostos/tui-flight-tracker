@@ -1,0 +1,62 @@
+name: "Continuous Integration"
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  python-linter:
+    name: Python Linter
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        name: Checking out repo
+      - uses: actions/setup-python@v6
+        name: Installing Python
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v7
+        name: Setting up uv
+      - run: | 
+          uv sync
+          uv run ruff check src/
+          uv run ruff format --check src/
+        name: Linting & Formating
+
+  type-checker:
+    name: Type Checker
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        name: Checking out repo
+      - uses: actions/setup-python@v6
+        name: Install Python
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v7
+        name: Setting up uv
+      - run: | 
+          uv sync
+          uv run mypy src/
+        name: Checking types
+
+  tests-runner:
+    name: Tests Runner
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        name: Checking out repo
+      - uses: actions/setup-python@v6
+        name: Install Python
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v7
+        name: Setting up uv
+      - run: |
+          uv sync
+          uv run pytest
+        name: Running tests
