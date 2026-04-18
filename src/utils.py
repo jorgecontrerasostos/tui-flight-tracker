@@ -2,6 +2,10 @@ from fli.models import Airport
 
 
 def get_airports() -> list[tuple[str, str]]:
+    """
+    This is a documentation for my function
+    :return:
+    """
     return [(f"{airport.name} - {airport.value}", airport.name) for airport in Airport]
 
 
