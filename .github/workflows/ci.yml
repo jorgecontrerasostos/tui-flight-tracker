@@ -17,6 +17,8 @@ jobs:
     name: Python Linter
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v6
+        name: Checking out repo
       - uses: "./.github/actions/setup_dependencies"
         name: Setting up dependencies
       - run: |
@@ -30,6 +32,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs: python-linter
     steps:
+      - uses: actions/checkout@v6
+        name: Checking out repo
       - uses: "./.github/actions/setup_dependencies"
         name: Setting up dependencies
       - run: |
@@ -42,6 +46,8 @@ jobs:
     needs: python-linter
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v6
+        name: Checking out repo
       - uses: "./.github/actions/setup_dependencies"
         name: Setting up dependencies
       - run: |
