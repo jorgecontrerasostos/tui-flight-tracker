@@ -8,20 +8,18 @@ on:
     branches:
       - "main"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   python-linter:
     name: Python Linter
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
-        name: Checking out repo
-      - uses: actions/setup-python@v6
-        name: Installing Python
-        with:
-          python-version: '3.12'
-      - uses: astral-sh/setup-uv@v7
-        name: Setting up uv
-      - run: | 
+      - uses: "./.github/actions/setup_dependencies"
+        name: Setting up dependencies
+      - run: |
           uv sync
           uv run ruff check src/
           uv run ruff format --check src/
@@ -30,32 +28,22 @@ jobs:
   type-checker:
     name: Type Checker
     runs-on: ubuntu-24.04
+    needs: python-linter
     steps:
-      - uses: actions/checkout@v6
-        name: Checking out repo
-      - uses: actions/setup-python@v6
-        name: Install Python
-        with:
-          python-version: '3.12'
-      - uses: astral-sh/setup-uv@v7
-        name: Setting up uv
-      - run: | 
+      - uses: "./.github/actions/setup_dependencies"
+        name: Setting up dependencies
+      - run: |
           uv sync
           uv run mypy src/
         name: Checking types
 
   tests-runner:
     name: Tests Runner
+    needs: python-linter
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
-        name: Checking out repo
-      - uses: actions/setup-python@v6
-        name: Install Python
-        with:
-          python-version: '3.12'
-      - uses: astral-sh/setup-uv@v7
-        name: Setting up uv
+      - uses: "./.github/actions/setup_dependencies"
+        name: Setting up dependencies
       - run: |
           uv sync
           uv run pytest
