@@ -42,6 +42,8 @@ class FlightTracker(App):
             ),
             Label("When?"),
             Input(placeholder="yyyy-mm-dd", type="text", name="departure_date"),
+            Label("When are you coming back?"),
+            Input(placeholder="yyyy-mm-dd", type="text", name="return_date"),
             Label("How many?"),
             Input(
                 placeholder="# of travelers",
