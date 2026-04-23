@@ -1,0 +1,22 @@
+name: "Continuous Delivery"
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Publish Version to PYPI
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        name: Checking out repo
+      - uses: "./.github/actions/setup_dependencies"
+        name: Setting up dependencies
+      - run: |
+          uv build
+          uv publish
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+
