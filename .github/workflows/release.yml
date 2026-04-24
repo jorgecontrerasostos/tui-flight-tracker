@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  release-to-pypi:
     name: Publish Version to PYPI
     runs-on: ubuntu-24.04
     steps:
@@ -22,11 +22,15 @@ jobs:
           uv publish
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-
-      - uses: softprops/action-gh-release@v2
+  create-release-notes:
+    name: Create Release Notes
+    runs-on: ubuntu-24.04
+    needs: release-to-pypi
+    steps:
+      - uses: softprops/action-gh-release@v3
         name: Create GitHub Release
         with:
-          generate-release-notes: true
+          generate_release_notes: true
           files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
