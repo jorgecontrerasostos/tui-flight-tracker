@@ -1,17 +1,17 @@
-from rich.text import Text
-from rich.console import Console
 from textual.app import App, ComposeResult
 from textual.suggester import SuggestFromList
 from textual.widgets import Footer, Header, Label, Button, Input, DataTable
 from textual.containers import Vertical
+from rich.text import Text
 from formatters import format_airline, format_duration, format_price, format_time
 from utils import get_airport
 from search import search_flight, search_round_trip
 
-console = Console()
-
 
 class FlightTracker(App):
+    CSS_PATH = "app.tcss"
+    TITLE = "✈  Flight Tracker"
+
     departure: str = ""
     arrival: str = ""
     travel_date: str = ""
@@ -21,13 +21,7 @@ class FlightTracker(App):
     def compose(self) -> ComposeResult:
         yield Header()
         yield Vertical(
-            Label(
-                Text.assemble(
-                    "✈️  Welcome to (A very cool app name goes here)!",
-                    "bold green",
-                    style="bold",
-                )
-            ),
+            Label("✈  Search for flights below", classes="title"),
             Label(Text("Where are we departing from?")),
             Input(
                 suggester=SuggestFromList(
