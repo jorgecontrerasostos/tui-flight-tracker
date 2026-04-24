@@ -84,6 +84,9 @@ class FlightTracker(App):
                 self.notify("Departure and or Arrival can't be empty", severity="error")
                 return
 
+            table = self.query_one(DataTable)
+            table.clear(columns=True)
+
             if self.return_date:
                 rt_results = search_round_trip(
                     departure_date=self.travel_date,
@@ -98,8 +101,6 @@ class FlightTracker(App):
                 if not rt_results:
                     self.notify("No flights for this route", severity="information")
                     return
-                table = self.query_one(DataTable)
-                table.clear(columns=True)
                 table.add_columns(
                     "Price",
                     "Outbound Departure",
@@ -138,8 +139,6 @@ class FlightTracker(App):
                 if not ow_results:
                     self.notify("No flights for this route", severity="information")
                     return
-                table = self.query_one(DataTable)
-                table.clear(columns=True)
                 table.add_columns(
                     "Price",
                     "Stops",
