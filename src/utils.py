@@ -1,5 +1,4 @@
 from fli.models import Airport
-from datetime import datetime
 
 def get_airports() -> list[tuple[str, str]]:
     """
