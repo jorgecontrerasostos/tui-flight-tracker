@@ -1,5 +1,6 @@
 from fli.models import Airport
 
+
 def get_airports() -> list[tuple[str, str]]:
     """
     Returns a list of tuples containing information about airports.
