@@ -1,5 +1,5 @@
 from fli.models import Airport
-
+from datetime import datetime
 
 def get_airports() -> list[tuple[str, str]]:
     """
@@ -25,5 +25,10 @@ def get_airport() -> list[str]:
     return [f"{airport.name} - {airport.value}" for airport in Airport]
 
 
-def validate_date():
+def validate_date(date: str):
+    """
+    This is a docstring.
+    :param date:
+    :return:
+    """
     pass
